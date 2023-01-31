@@ -2,8 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser")
 const request = require("request")
 const app = express();
+const dotenv = require('dotenv');
 app.use(bodyParser.urlencoded({extended: true}));
 const https = require("https")
+dotenv.config();
 
 
 app.use(express.static("Public"));
@@ -34,9 +36,9 @@ app.post('/', function(req,res){
 
         const options = {
             method: "POST",
-            auth: "Tamilore:bfca8ecd837cc5a9004bee910e27728a-us21"
+            auth: `Tamilore:${process.env.MAILCHIMP}`
         }
-        const url = "https://us21.api.mailchimp.com/3.0/lists/b3ae04ce4"
+        const url = `https://us21.api.mailchimp.com/3.0/lists/${process.env.LIST_KEY}`
         const request = https.request(url, options, function(response){
             if(response.statusCode === 200){
                 res.sendFile(__dirname + '/success.html')
@@ -61,9 +63,3 @@ app.post("/failure", function(req,res){
 app.listen(3400, function(){
     console.log("Server running on Port 3400");
 })
-
-//mailchip api key
-// bfca8ecd837cc5a9004bee910e27728a-us21
-
-//list id
-//fb3ae04ce4
